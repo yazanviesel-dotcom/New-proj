@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { X, Brain, Check, AlertCircle, Loader2, Award, RefreshCw, BookOpen, Search } from 'lucide-react';
+import { X, Brain, Check, AlertCircle, Loader2, Award, RefreshCw, BookOpen, Search, Volume2 } from 'lucide-react';
 import { Question, QuizState, Quiz } from '../types';
 import { generateQuizQuestions } from '../services/geminiService';
 import { db } from '../firebase';
@@ -170,6 +171,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const currentQ = state.questions[state.currentQuestionIndex];
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
@@ -238,15 +241,15 @@ const QuizModal: React.FC<QuizModalProps> = ({ isOpen, onClose }) => {
                      سؤال {state.currentQuestionIndex + 1} من {state.questions.length}
                    </span>
                    <h3 className="text-2xl font-bold text-gray-900 leading-relaxed">
-                     {state.questions[state.currentQuestionIndex].question}
+                     {currentQ.question}
                    </h3>
                  </div>
    
                  {/* Options */}
                  <div className="flex flex-col gap-4">
-                   {state.questions[state.currentQuestionIndex].options.map((option, idx) => {
+                   {currentQ.options.map((option, idx) => {
                      const isSelected = selectedOption === idx;
-                     const isCorrect = idx === state.questions[state.currentQuestionIndex].correctAnswer;
+                     const isCorrect = idx === currentQ.correctAnswer;
                      
                      let btnClass = "w-full text-right p-4 rounded-xl border-2 border-gray-100 transition-all hover:border-emerald-200 hover:bg-emerald-50 flex justify-between items-center group";
                      
@@ -273,10 +276,10 @@ const QuizModal: React.FC<QuizModalProps> = ({ isOpen, onClose }) => {
                  </div>
 
                  {/* Explanation Box */}
-                 {showFeedback && state.questions[state.currentQuestionIndex].explanation && (
+                 {showFeedback && currentQ.explanation && (
                      <div className="mt-6 animate-fade-in p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
                          <p className="text-yellow-800 font-bold mb-1">تفسير الإجابة:</p>
-                         <p className="text-gray-700">{state.questions[state.currentQuestionIndex].explanation}</p>
+                         <p className="text-gray-700">{currentQ.explanation}</p>
                      </div>
                  )}
                </div>

@@ -2,12 +2,12 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Question } from "../types";
 
 // Initialize the client
-// Note: The system prompt instructs to use process.env.API_KEY directly in the constructor
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const generateQuizQuestions = async (topic: string = "General Knowledge"): Promise<Question[]> => {
   try {
-    const model = "gemini-2.5-flash";
+    // Fix: Updated to the recommended model 'gemini-3-flash-preview' for basic text tasks
+    const model = 'gemini-3-flash-preview';
     const prompt = `Create a list of 3 multiple-choice questions about ${topic} suitable for a 10th-grade student. 
     The questions should be in Arabic.
     Provide 4 options for each question.
@@ -61,7 +61,8 @@ export interface TeacherQuizParams {
 
 export const generateTeacherQuiz = async (params: TeacherQuizParams): Promise<Question[]> => {
   try {
-    const model = "gemini-2.5-flash";
+    // Fix: Updated to the recommended model 'gemini-3-flash-preview' for basic text tasks
+    const model = 'gemini-3-flash-preview';
     const questionCount = 5;
     
     let prompt = `Create a ${params.type === 'mcq' ? 'Multiple Choice' : 'True/False'} quiz.
